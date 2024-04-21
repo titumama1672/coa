@@ -1,0 +1,29 @@
+ASSUME CS:CODE, DS:DATA
+
+DATA SEGMENT
+    COUNT EQU 10H  ; Define the number of Fibonacci numbers to generate
+    NUM DB 0       ; Array to store the Fibonacci numbers, initialized with the first two numbers (0 and 1)
+    NUM2 DB 1
+DATA ENDS
+
+CODE SEGMENT
+START:
+    MOV AX, DATA
+    MOV DS, AX
+
+    MOV CL, COUNT  ; Load the number of Fibonacci numbers to generate into CL
+    SUB CL, 02H    ; Subtract 2 to account for the initial numbers (0 and 1)
+
+    MOV SI, OFFSET NUM  ; Initialize SI to point to the start of the array NUM
+
+UP:
+    MOV AL, [SI]   ; Load the current Fibonacci number into AL
+    ADD AL, [SI + 1]  ; Add the next Fibonacci number
+    MOV [SI + 2], AL  ; Store the sum as the next Fibonacci number
+    INC SI         ; Move to the next position in the array
+    LOOP UP        ; Repeat until all Fibonacci numbers are generated
+
+    INT 03H        ; Interrupt for debugging
+
+CODE ENDS
+END START
